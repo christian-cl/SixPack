@@ -1,8 +1,6 @@
 package es.uma.lcc.neo.cintrano.shortestpath;
 
-import es.uma.lcc.neo.cintrano.shortestpath.model.Node;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.Solution;
 
 /**
  * Created by Christian Cintrano on 5/12/16.
