@@ -1,26 +1,23 @@
 package es.uma.lcc.neo.cintrano;
 
 import es.uma.lcc.neo.cintrano.shortestpath.BiObjectiveShortestPathProblem;
+import es.uma.lcc.neo.cintrano.shortestpath.CrossoverSimple;
 import es.uma.lcc.neo.cintrano.shortestpath.PathSolution;
+import es.uma.lcc.neo.cintrano.shortestpath.model.Graph;
+import es.uma.lcc.neo.cintrano.shortestpath.model.MutationSimple;
+import es.uma.lcc.neo.cintrano.shortestpath.model.SelectionSimple;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
-import org.uma.jmetal.operator.impl.crossover.SBXCrossover;
-import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
-import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.ProblemUtils;
-import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
 import java.util.List;
 
 import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printFinalSolutionSet;
-import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printQualityIndicators;
 
 /**
  * Created by Christian Cintrano on 03/12/2016.
@@ -29,12 +26,13 @@ import static org.uma.jmetal.runner.AbstractAlgorithmRunner.printQualityIndicato
 public class RobustnessTrashMain {
 
     public static void main (String[] args) {
-        System.out.println("=== Init Run ===");
+        System.out.println("=== START ===");
 
         Problem problem = new BiObjectiveShortestPathProblem();
+        System.out.println("problem:: " + problem);
         Algorithm<List<PathSolution>> algorithm;
-        CrossoverOperator<PathSolution> crossover;
-        MutationOperator<PathSolution> mutation;
+        CrossoverOperator crossover;
+        MutationOperator mutation;
         SelectionOperator<List<PathSolution>, PathSolution> selection;
         String referenceParetoFront = "" ;
 
@@ -52,16 +50,16 @@ public class RobustnessTrashMain {
 
         double crossoverProbability = 0.9 ;
         double crossoverDistributionIndex = 20.0 ;
-        crossover = new SBXCrossover(crossoverProbability, crossoverDistributionIndex) ;
+        crossover = new CrossoverSimple(crossoverProbability, crossoverDistributionIndex);
 
         double mutationProbability = 1.0 / problem.getNumberOfVariables() ;
         double mutationDistributionIndex = 20.0 ;
-        mutation = new PolynomialMutation(mutationProbability, mutationDistributionIndex) ;
+        mutation = new MutationSimple();
 
-        selection = new BinaryTournamentSelection<PathSolution>(new RankingAndCrowdingDistanceComparator<PathSolution>());
+        selection = new SelectionSimple();
 
         algorithm = new NSGAIIBuilder<PathSolution>(problem, crossover, mutation)
-                .setSelectionOperator(selection)
+    //            .setSelectionOperator(selection)
                 .setMaxIterations(250)
                 .setPopulationSize(100)
                 .build() ;
@@ -74,9 +72,9 @@ public class RobustnessTrashMain {
         JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
 
         printFinalSolutionSet(population);
-        if (!referenceParetoFront.equals("")) {
-            printQualityIndicators(population, referenceParetoFront) ;
-        }
+//        if (!referenceParetoFront.equals("")) {
+//            printQualityIndicators(population, referenceParetoFront) ;
+//        }
         System.out.println("=== END ===");
     }
 }
