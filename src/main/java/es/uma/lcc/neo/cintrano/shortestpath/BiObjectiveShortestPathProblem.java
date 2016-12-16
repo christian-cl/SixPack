@@ -92,8 +92,8 @@ public class BiObjectiveShortestPathProblem implements Problem<PathSolution> {
     public void evaluate(PathSolution pathSolution) {
         float f0 = 0, f1 = 0;
         for (int i = 0; i < pathSolution.getNumberOfObjectives(); i++) {
-            f0 += pathSolution.getVariableValue(0).getWeight(0);
-            f1 += pathSolution.getVariableValue(1).getWeight(1);
+            f0 += pathSolution.getVariableValue(0).getWeight(0).getValue();
+            f1 += pathSolution.getVariableValue(1).getWeight(1).getValue();
         }
 
         pathSolution.setObjective(0,f0);

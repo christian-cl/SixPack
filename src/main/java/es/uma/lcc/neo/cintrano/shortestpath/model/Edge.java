@@ -1,27 +1,39 @@
 package es.uma.lcc.neo.cintrano.shortestpath.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by christian on 5/12/16.
+ * Created by Christian Cintrano on 5/12/16.
  */
 public class Edge {
+    private int id;
     private Node start;
     private Node end;
-    private double[] weights;
+    private List<Weight> weights;
 
     public Edge(Node start, Node end) {
         this.start = start;
         this.end = end;
     }
 
-    public Edge(Node start, Node end, double[] weights) {
+    public Edge(int id, Node start, Node end) {
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        weights = new ArrayList<Weight>();
+    }
+
+    public Edge(Node start, Node end, List<Weight> weights) {
         this.start = start;
         this.end = end;
         this.weights = weights;
     }
+
     public Edge(Node start, Node end, double w1, double w2) {
-        this(start, end, new double[]{w1, w2});
+        this(start, end);
+        weights.add(new Weight(w1, "t1"));
+        weights.add(new Weight(w2, "t2"));
     }
 
     public Node getStart() {
@@ -40,26 +52,43 @@ public class Edge {
         this.end = end;
     }
 
-    public double[] getWeights() {
+    public List<Weight> getWeights() {
         return weights;
     }
 
-    public void setWeights(double[] weights) {
+    public void setWeights(List<Weight> weights) {
         this.weights = weights;
     }
 
-    public double getWeight(int i) {
-        return weights[i];
+    public int getId() {
+        return id;
     }
 
-    public void setWeight(int i, double weight) {
-        this.weights[i] = weight;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Weight getWeight(int i) {
+        return weights.get(i);
+    }
+
+    public void setWeight(int i, Weight weight) {
+        this.weights.set(i, weight);
+    }
+
+    public void addWeight(Weight weight) {
+        this.weights.add(weight);
     }
 
     @Override
     public String toString() {
-        return "<" + start +
+        String s = "<" + start +
                 "," + end +
-                ">";
+                "> : [";
+        for (Weight w : weights) {
+            s += w.toString();
+        }
+        s+= "]\n";
+        return s;
     }
 }

@@ -27,9 +27,13 @@ public class Graph {
 
     @Override
     public String toString() {
-        return "Graph{" +
+        String s = "Graph{" +
                 "n nodes=" + nodes.size() +
                 ", n edges=" + edges.size() +
-                '}';
+                "}\n";
+        for (Edge e : edges) {
+            s += e.toString();
+        }
+        return s;
     }
 }
